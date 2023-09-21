@@ -5,7 +5,7 @@ from sqlmodel import Field, SQLModel, Relationship
 
 # User Model
 
-class User(SQLModel, table=True):
+class User(SQLModel, table=True,index=True):
     __tablename__ = "users"
     user_id: Optional[int] = Field(default=None, primary_key=True, )
     email: str = Field(unique=True)
@@ -24,16 +24,16 @@ class User(SQLModel, table=True):
 
 # address Models
 
-class DeliveryAddress(SQLModel, table=True):
+class DeliveryAddress(SQLModel, table=True, index=True):
     __tablename__ = 'delivery_address'
 
     address_id: int = Field(primary_key=True)
     user_id: int = Field(foreign_key='users.user_id')
     city_id: int = Field(foreign_key='city.city_id')
-
-    address = str
-    phone = str
-    coordinates = str
+    address : str
+    phone : str
+    coordinates : str
+    city_relations:'City' = Relationship(back_populates='address')
     user_relation: 'User' = Relationship(back_populates='delivery_addresses')
     orders: List['Order'] = Relationship(back_populates='delivery_address_relation')
 
@@ -57,7 +57,7 @@ class City(SQLModel, table=True):
 
     region_id: int = Field(foreign_key='region.region_id')
     status: bool = Field(default=True)
-
+    address: 'DeliveryAddress' = Relationship(back_populates='city_relations')
     region_relation: 'Region' = Relationship(back_populates='cities')
 
 
@@ -102,6 +102,7 @@ class Author(SQLModel, table=True):
 class Blog(SQLModel, table=True):
     __tablename__ = "blogs"
     blog_id: int = Field(primary_key=True, )
+    image_url: str
     author_id: int = Field(foreign_key='authors.author_id')
     title: str
     slug: str = Field(unique=True)
@@ -115,7 +116,7 @@ class Blog(SQLModel, table=True):
 # Business Products
 
 
-class BusinessProduct(SQLModel, table=True):
+class BusinessProduct(SQLModel, table=True ,index=True):
     __tablename__ = 'business_product'
     business_product_id: int = Field(primary_key=True)
     business_id: int = Field(foreign_key='business.business_id')
@@ -132,6 +133,7 @@ class BusinessProduct(SQLModel, table=True):
     product_source_relation: 'ProductSource' = Relationship(back_populates='products')
     measuring_unit_relation: 'MeasuringUnit' = Relationship(back_populates='products')
     processing_options: List['ProcessingOption'] = Relationship(back_populates='business_product')
+    cart_obj_relation: 'CartItem' = Relationship(back_populates="business_product_relation")
 
 
 class ProductSource(SQLModel, table=True):
@@ -156,6 +158,7 @@ class ProcessingOption(SQLModel, table=True):
     business_product_id: int = Field(foreign_key='business_product.business_product_id')
     product_processing_id: int = Field(foreign_key='product_processing.product_processing_id')
     status: bool = Field(default=True)
+    processing_option_relation :"ProductProcessing"= Relationship(back_populates='product_processings')
 
     business_product: 'BusinessProduct' = Relationship(back_populates='processing_options')
 
@@ -203,6 +206,8 @@ class Cart(SQLModel, table=True):
     cart_items: List['CartItem'] = Relationship(back_populates='cart_relation')
 
 
+
+
 class CartItem(SQLModel, table=True):
     __tablename__ = 'cart_item'
     cart_item_id: int = Field(primary_key=True)
@@ -212,6 +217,7 @@ class CartItem(SQLModel, table=True):
     quantity: float
     unit_price: float
     cart_relation: 'Cart' = Relationship(back_populates='cart_items')
+    business_product_relation: List['BusinessProduct'] = Relationship(back_populates="cart_obj_relation")
 
 
 # Order Models
@@ -276,7 +282,7 @@ class ProductCategory(SQLModel, table=True):
 class ProductImage(SQLModel, table=True):
     __tablename__ = 'product_image'
     product_image_id: int = Field(primary_key=True)
-    file_id: int
+    file_id: str
     product_id: int = Field(foreign_key='product.product_id')
     status: bool = Field(default=True)
     product_relation: 'Product' = Relationship(back_populates='product_images')
@@ -287,19 +293,24 @@ class Product(SQLModel, table=True):
     product_id: int = Field(primary_key=True)
     product_category_id: int = Field(foreign_key='product_category.product_category_id')
     name: str
+    description: str
     status: bool = Field(default=True)
     business_products: List['BusinessProduct'] = Relationship(back_populates='product_relation')
     product_category_relation: 'ProductCategory' = Relationship(back_populates='products')
     product_images: List['ProductImage'] = Relationship(back_populates='product_relation')
 
 
-class ProductProcessing(SQLModel, table=True):
+class ProductProcessing(SQLModel, table=True,index=True):
     __tablename__ = 'product_processing'
     product_processing_id: int = Field(primary_key=True)
     product_processing: str
+    product_processings:'ProcessingOption' = Relationship(back_populates="processing_option_relation")
 
     status: bool
 
 
-
-
+class Photos(SQLModel, table=True):
+    __tablename__ = 'photos'
+    id: int = Field(primary_key=True)
+    photo_name: str
+    url: str

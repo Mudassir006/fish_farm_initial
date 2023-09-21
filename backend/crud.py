@@ -1,4 +1,4 @@
-from fastapi import HTTPException
+from fastapi import HTTPException, UploadFile, File, Form
 from sqlmodel import select
 
 import models
@@ -7,7 +7,7 @@ from database import Session
 from exceptions import not_found_exception
 
 
-def Creat_blog(blog: schema.Blog, session: Session):
+def Creat_blog(blog: schema.Blog1, session: Session , ):
     new_blog = models.Blog(title=blog.title, slug=blog.slug, blog=blog.blog, lang=blog.lang, author_id=blog.author_id)
     session.add(new_blog)
     session.commit()
@@ -16,7 +16,7 @@ def Creat_blog(blog: schema.Blog, session: Session):
     return new_blog
 
 
-def Create_user(user: schema.User, session: Session):
+def Create_user(user: schema.User1, session: Session):
     n_user = models.User(email=user.email, full_name=user.full_name, gender=user.gender, password=user.password,
                          role=user.role)
     session.add(n_user)
@@ -26,9 +26,9 @@ def Create_user(user: schema.User, session: Session):
     return n_user
 
 
-def create_autor(author: schema.Author, session: Session):
+def create_autor(author: schema.Author, session: Session,):
     n_author = models.Author(name=author.name, title=author.title, title_urdu=author.title_urdu,
-                             name_urdu=author.name_urdu, photo_url=author.photo_url, user_id=author.user_id)
+                             name_urdu=author.name_urdu, photo_url = author.photo_url, user_id=author.user_id)
 
     session.add(n_author)
     session.commit()
@@ -37,7 +37,7 @@ def create_autor(author: schema.Author, session: Session):
     return n_author
 
 
-def delivery_address(address: schema.DeliveryAddress, session: Session):
+def delivery_address(address: schema.DeliveryAddress1, session: Session):
     d_address = models.DeliveryAddress(address=address.address, phone=address.phone, coordinates=address.coordinates,
                                        city_id=address.city_id, user_id=address.user_id)
 
@@ -127,8 +127,20 @@ def product_category(pc: schema.ProductCategory, session: Session):
     return pec
 
 
-def product_image(pi: schema.ProductImage, session: Session):
-    pic = models.ProductImage(status=pi.status, file_id=pi.file_id, product_id=pi.product_id)
+def product_image(session: Session,product_id:int= Form(...),status:bool=Form(...),file:UploadFile=File(...) ):
+
+
+    with open(file.filename, "wb") as f:
+        f.write(file.file.read())
+
+    db_image = models.Photos(photo_name=file.filename, url=f"/uploads/{file.filename}")
+    session.add(db_image)
+    session.commit()
+
+    # Create entry in database for the blog
+    image_url = f"/uploads/{file.filename}"
+    pic = models.ProductImage(status=status, file_url=image_url, product_id=product_id)
+
 
     session.add(pic)
     session.commit()
@@ -138,7 +150,7 @@ def product_image(pi: schema.ProductImage, session: Session):
 
 
 def product(p: schema.Product, session: Session):
-    pro = models.Product(name=p.name, status=p.status, product_category_id=p.product_category_id)
+    pro = models.Product(name=p.name, status=p.status, product_category_id=p.product_category_id,description=p.description)
 
     session.add(pro)
     session.commit()
@@ -148,7 +160,7 @@ def product(p: schema.Product, session: Session):
 
 
 def product_processing(prp: schema.ProductProcessing, session: Session):
-    pip = models.ProductProcessing(product_processing=prp.product_processing, status=prp.status)
+    pip = models.ProductProcessing(product_processing=prp.product_processing, status=prp.status,)
 
     session.add(pip)
     session.commit()
@@ -187,7 +199,7 @@ def measuring_unit(mu: schema.MeasuringUnit, s: Session):
     return mis
 
 
-def processing_option(po: schema.ProcessingOption, s: Session):
+def processing_option(po: schema.ProcessingOption1, s: Session):
     pop = models.ProcessingOption(status=po.status, product_processing_id=po.product_processing_id,
                                   business_product_id=po.business_product_id)
 
@@ -198,7 +210,7 @@ def processing_option(po: schema.ProcessingOption, s: Session):
     return pop
 
 
-def cart(cart: schema.Cart, s: Session):
+def cart(cart: schema.Cart1, s: Session):
     caart = models.Cart(user_id=cart.user_id)
 
     s.add(caart)
@@ -208,7 +220,7 @@ def cart(cart: schema.Cart, s: Session):
     return caart
 
 
-def cart_item(cat: schema.CartItem, s: Session):
+def cart_item(cat: schema.CartItem1, s: Session):
     catim = models.CartItem(quantity=cat.quantity, unit_price=cat.unit_price, cart_id=cat.cart_id,
                             business_product_id=cat.business_product_id, processing_option_id=cat.processing_option_id)
     s.add(catim)
