@@ -1,0 +1,231 @@
+.product-tile {
+      border-top: 1px solid gainsboro;
+      border-left: solid 1px gainsboro;
+      border-right: solid 1px gainsboro;
+      border-radius: 20px;
+      box-shadow: 0px 7px 9px rgba(0, 0, 0, 0.2);
+      padding: 0px; /* Adjusted padding */
+      margin-top: 10px;
+      height: 580px;
+      width: 400px;
+      display: block;
+
+
+    }
+.navbar-nav.custom-align {
+       margin-left: 60%;
+    }
+.twobuttons{
+    display: flex;
+
+
+}
+    .product-image {
+    background-size: cover;
+    background-position: top; /* Positioned at the top */
+    height: 50%; /* Adjusted to fill the upper 50% of the tile */
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.product-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 10px;
+    padding: 10px;
+}
+
+.product-description {
+    margin-top: -4px;
+    padding: 10px;
+}
+
+.product-rating {
+    margin-top: -4px;
+    padding: 10px;
+    font-size: 20px;
+}
+
+.product-price {
+    margin-top: -4px;
+    font-weight: bold;
+    padding: 10px;
+}
+
+    .carousel-wrapper {
+      position: relative;
+    }
+    .carousel-control {
+      z-index: 1;
+    }
+    .review-tile {
+      border-radius: 10px;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      margin: 10px;
+      background-color: #f9f9f9;
+      text-align: center;
+    }
+    .review-image {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 50%;
+      margin-top: -30px;
+    }
+    .customer-name {
+      font-size: 18px;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+    .customer-description {
+      margin-top: 5px;
+    }
+    .customer-rating {
+      margin-top: 5px;}
+
+    .review-tile {
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        background-color: #f9f9f9;
+        padding: 20px;
+        text-align: center;
+        margin: 20px;
+    }
+
+    .carousel-control-prev,
+    .carousel-control-next {
+        font-weight: bolder;
+        font-size: 40px;
+        color: black;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 1;
+    }
+
+    .carousel-control-prev-icon,
+    .carousel-control-next-icon {
+        background-color: white;
+        width: 25px;
+        height: 25px;
+    }
+
+    .carousel-control-prev:before {
+        content: '\2039'; /* Left arrow */
+        margin-left: -95px; /* Adjust to move the button further to the left */
+    }
+
+    .carousel-control-next:before {
+       
+
+        border-radius: 50%;
+        content: '\203A'; /* Right arrow */
+        margin-right: -95px; }/* Adjust to move the button further to the right */
+
+
+
+
+
+
+* {
+  box-sizing: border-box;
+}
+
+.dropdown-toggle::after {
+    display: inline-block;
+    margin-left: 3.255em;
+}
+
+@media (max-width: 1409px) {
+    .col-md-4 {
+        flex: 0 0 auto;
+        width: 50%;
+    }
+}
+
+@media (max-width: 950px) {
+    .col-md-3{
+        width: 50%;
+    }
+    .col-md-4 {
+        flex: 0 0 auto ;
+        width: 100%;
+        margin-left: 20%;
+
+    }
+    .grid-container{
+
+        align-items: center;
+    }
+    .column{
+        width: 50%;
+    }
+
+
+}
+@media (max-width: 1265px) {
+    .col-md-3{
+        width: 50%;
+    }
+    .base{
+        padding-top: 70px;
+    }
+
+}
+
+@media (min-width: 1500px) {
+    .col-md-4 {
+        flex: 0 0 auto;
+        width: 33.333%;
+    }
+}
+
+@media (max-width: 768px) {
+
+
+
+    #footer{
+        width: 100%;
+    }
+
+
+
+    .text-container{
+        margin-left: 10%;
+        width: 100%;
+    }
+    .col-md-3{
+        flex: 0 0 auto;
+        width: 100%;
+        height: 50%;
+
+    }
+
+
+
+    }
+
+
+
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+@media (max-width: 984px) {
+     .base{
+         max-width: 100%;
+         max-height: 100%;
+         margin-left: 30%;
+         margin-top: 20px;
+         border-radius: 50%;
+         padding: 10px;
+
+     }
+}
+
